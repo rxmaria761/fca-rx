@@ -1,10 +1,10 @@
 "use strict";
 
-const utils = require('../../../utils');
+const utils = require('./../utils.js');
 
 module.exports = function (defaultFuncs, api, ctx) {
   /**
-   * Made by Choru Official 
+   * Made by rX Abdullah
    * Mqtt & Graph
    * Manages or sets the custom theme for a Facebook thread.
    * If only a theme name/keyword is provided, it attempts to find and set the matching theme.
