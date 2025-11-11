@@ -1,6 +1,6 @@
 "use strict";
 
-const utils = require('./../utils.js');
+const utils = require('../utils.js');
 
 /**
  * Builds the core API context and default functions after successful login.
