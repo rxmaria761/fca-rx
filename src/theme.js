@@ -1,6 +1,6 @@
 "use strict";
 
-const utils = require('./../utils.js');
+const utils = require('../utils.js');
 
 module.exports = function (defaultFuncs, api, ctx) {
   /**
