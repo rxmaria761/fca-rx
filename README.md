@@ -69,7 +69,7 @@ If you encounter issues or want to give feedback, feel free to message us via Fa
 > Requires **Node.js v20+**
 
 ```bash
-npm i rxabdullah
+npm i rx-fca
 ```
 
 ---
