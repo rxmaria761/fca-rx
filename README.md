@@ -4,11 +4,6 @@
 
 ---
 
-## 📚 Documentation & Feedback
-
-Full documentation and advanced examples:
-[https://exocore-dev-docs-exocore.hf.space](https://exocore-dev-docs-exocore.hf.space)
-
 If you encounter issues or want to give feedback, feel free to message us via Facebook:
 
 * [@Rx Abdullah](https://www.facebook.com/rxabdullah007)
