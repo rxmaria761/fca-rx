@@ -2194,31 +2194,34 @@ function formatDeltaEvent(m) {
     var logMessageType;
     var logMessageData;
 
-    // log:thread-color => {theme_color}
-    // log:user-nickname => {participant_id, nickname}
-    // log:thread-icon => {thread_icon}
-    // log:thread-name => {name}
-    // log:subscribe => {addedParticipants - [Array]}
-    // log:unsubscribe => {leftParticipantFbId}
-    // console.log(m)
     switch (m.class) {
+
         case "JoinableMode":
             if (m.mode) return;
-            logMessageType = "joinable_group_link_reset"
-            logMessageData = { link: m.link }
+            logMessageType = "joinable_group_link_reset";
+            logMessageData = { link: m.link };
             break;
+
         case "AdminTextMessage":
             logMessageType = getAdminTextMessageType(m);
             logMessageData = m.untypedData;
             break;
+
         case "ThreadName":
             logMessageType = "log:thread-name";
             logMessageData = { name: m.name };
             break;
+
+        case "ThreadIcon":   // ✅ Added thread icon support
+            logMessageType = "log:thread-icon";
+            logMessageData = { thread_icon: m.threadIcon };
+            break;
+
         case "ParticipantsAddedToGroupThread":
             logMessageType = "log:subscribe";
             logMessageData = { addedParticipants: m.addedParticipants };
             break;
+
         case "ParticipantLeftGroupThread":
             logMessageType = "log:unsubscribe";
             logMessageData = { leftParticipantFbId: m.leftParticipantFbId };
@@ -2227,7 +2230,10 @@ function formatDeltaEvent(m) {
 
     return {
         type: "event",
-        threadID: formatID((m.messageMetadata.threadKey.threadFbId || m.messageMetadata.threadKey.otherUserFbId).toString()),
+        threadID: formatID(
+            (m.messageMetadata.threadKey.threadFbId ||
+             m.messageMetadata.threadKey.otherUserFbId).toString()
+        ),
         logMessageType: logMessageType,
         logMessageData: logMessageData,
         logMessageBody: m.messageMetadata.adminText,
