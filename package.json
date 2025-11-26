@@ -1,6 +1,6 @@
 {
     "name": "rx-fca",
-    "version": "2.0.4",
+    "version": "2.3.4",
     "description": "A Facebook chat api for messenger bots.",
     "keywords": [
         "facebook",
