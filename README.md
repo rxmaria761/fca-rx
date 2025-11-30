@@ -1,6 +1,6 @@
 # 🎀 rx-fca
 
-💁 **rx-fca** is a fully refactored Facebook Chat API (FCA) client built for **reliable**, **real-time**, and **modular** interaction with Facebook Messenger. Designed with modern bot development in mind, it offers full control over Messenger automation through a clean, stable interface.
+**rx-fca** is a fully refactored Facebook Chat API (FCA) client built for **reliable**, **real-time**, and **modular** interaction with Facebook Messenger. Designed with modern bot development in mind, it offers full control over Messenger automation through a clean, stable interface.
 
 ---
 
@@ -16,6 +16,10 @@ If you encounter issues or want to give feedback, feel free to message us via Fa
 
 * 🔐 **Precise Login Mechanism**
   Dynamically scrapes Facebook's login form and submits tokens for secure authentication.
+  
+* 🪄 **Ai-theme**
+    create ai theme (cradit - @Rx Abdullah) 
+  
 
 * 💬 **Real-time Messaging**
   Send and receive messages (text, attachments, stickers, replies).
