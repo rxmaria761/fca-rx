@@ -1,6 +1,6 @@
 'use strict';
 
-const { generateOfflineThreadingID } = require('../../utils');
+const { generateOfflineThreadingID } = require('../utils');
 
 module.exports = function (defaultFuncs, api, ctx) {
   return function setThreadThemeMqtt(threadID, themeFBID, callback) {
