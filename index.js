@@ -1,11 +1,12 @@
 "use strict";
 
+/* Modified by rX Abdullah 
+GitHub- github.com/rxabdullah007 */
+
 var utils = require("./utils");
 var cheerio = require("cheerio");
 var log = require("npmlog");
-/*var { getThemeColors } = require("../../func/utils/log.js");
-var logger = require("../../func/utils/log.js");
-var { cra, cv, cb, co } = getThemeColors();*/
+
 log.maxRecordSize = 100;
 var checkVerified = null;
 const Boolean_Option = ['online', 'selfListen', 'listenEvents', 'updatePresence', 'forceLogin', 'autoMarkDelivery', 'autoMarkRead', 'listenTyping', 'autoReconnect', 'emitReady'];
@@ -106,21 +107,12 @@ function buildAPI(globalOptions, html, jar) {
             if (seqMatches && seqMatches[1]) {
                 irisSeqID = seqMatches[1];
             }
-            try {
-                const jsonMatches = html.match(/\{"dtsg":({[^}]+})/);
-                if (jsonMatches && jsonMatches[1]) {
-                    const dtsgData = JSON.parse(jsonMatches[1]);
-                    if (dtsgData.token) fb_dtsg = dtsgData.token;
-                }
-            } catch { }
-            if (fb_dtsg) {
-                console.log("Found fb_dtsg!");
-            }
         } catch (e) {
             console.log("Error finding fb_dtsg:", e);
         }
     }
     extractFromHTML();
+
     var userID;
     var cookies = jar.getCookies("https://www.facebook.com");
     var userCookie = cookies.find(cookie => cookie.cookieString().startsWith("c_user="));
@@ -132,7 +124,7 @@ function buildAPI(globalOptions, html, jar) {
         return log.error('error', "Appstate is dead rechange it!", 'error');
     }
     userID = (tiktikCookie || userCookie).cookieString().split("=")[1];
-    //logger.log(`${cra(`[ CONNECT ]`)} Logged in as ${userID}`, "DATABASE");
+
     try { clearInterval(checkVerified); } catch (_) { }
     const clientID = (Math.random() * 2147483648 | 0).toString(16);
     let mqttEndpoint = `wss://edge-chat.facebook.com/chat?region=pnb&sid=${userID}`;
@@ -152,6 +144,7 @@ function buildAPI(globalOptions, html, jar) {
     } catch (e) {
         console.log('Using default MQTT endpoint');
     }
+
     log.info('Logging in...');
     var ctx = {
         userID: userID,
@@ -174,15 +167,18 @@ function buildAPI(globalOptions, html, jar) {
         wsTaskNumber: 0,
         reqCallbacks: {}
     };
+
     var api = {
         setOptions: setOptions.bind(null, globalOptions),
         getAppState: () => utils.getAppState(jar),
         postFormData: (url, body) => utils.makeDefaults(html, userID, ctx).postFormData(url, ctx.jar, body)
     };
+
     var defaultFuncs = utils.makeDefaults(html, userID, ctx);
     api.postFormData = function (url, body) {
         return defaultFuncs.postFormData(url, ctx.jar, body);
     };
+
     api.getFreshDtsg = async function () {
         try {
             const res = await defaultFuncs.get('https://www.facebook.com/', jar, null, globalOptions);
@@ -218,8 +214,19 @@ function buildAPI(globalOptions, html, jar) {
             return null;
         }
     };
-    //if (noMqttData) api.htmlData = noMqttData;
-    require('fs').readdirSync(__dirname + '/src/').filter(v => v.endsWith('.js')).forEach(v => { api[v.replace('.js', '')] = require(`./src/${v}`)(utils.makeDefaults(html, userID, ctx), api, ctx); });
+
+    // Load all src modules
+    require('fs').readdirSync(__dirname + '/src/').filter(v => v.endsWith('.js')).forEach(v => {
+        const func = require(`./src/${v}`)(utils.makeDefaults(html, userID, ctx), api, ctx);
+        api[v.replace('.js', '')] = func;
+    });
+
+    // ✅ Add createAITheme function to api
+    if (!api.createAITheme) {
+        const createAIThemeFn = require('./src/createAITheme');
+        api.createAITheme = createAIThemeFn(utils.makeDefaults(html, userID, ctx), api, ctx);
+    }
+
     api.listen = api.listenMqtt;
     return {
         ctx,
@@ -227,6 +234,9 @@ function buildAPI(globalOptions, html, jar) {
         api
     };
 }
+
+// Rest of your loginHelper, makeLogin, and login functions stay the same
+// (No changes needed there)
 
 function makeLogin(jar, email, password, loginOptions, callback, prCallback) {
     return async function (res) {
